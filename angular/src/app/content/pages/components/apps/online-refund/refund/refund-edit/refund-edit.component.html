@@ -1,0 +1,339 @@
+<m-portlet [options]="{enableSticky: true}">
+
+    <ng-container mPortletHeadTitle>
+        <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">
+                {{ getComponentTitle() }}
+            </h3>
+        </div>
+    </ng-container>
+
+    <ng-container mPortletHeadTools>
+        <div class="m-buttons--wrapper">
+            <button type="button" (click)="goBack()" class="btn btn-secondary m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Back to the refund list">
+                <span>
+                    <i class="la la-arrow-left"></i>
+                    <span>Back</span>
+                </span>
+            </button>
+            <button type="button" (click)="downloadRefund()" class="btn btn-outline-primary m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Download request">
+                <span>
+                    <i class="la la-download"></i>
+                    <span>Download</span>
+                </span>
+            </button>
+            <button type="button" (click)="rejectRefund(false)" class="btn btn-danger m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Process request" *ngIf="userSupport && processBtn">
+                <span>
+                    <i class="la la-remove"></i>
+                    <span>Reject</span>
+                </span>
+            </button>
+            <button type="button" (click)="processRefund(false)" class="btn btn-info m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Process request" *ngIf="userSupport && processBtn">
+                <span>
+                    <i class="la la-cogs"></i>
+                    <span>Process</span>
+                </span>
+            </button>
+            <button type="button" (click)="requeryRefund(false)" class="btn btn-warning m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Requery request" *ngIf="userFinance && requeryBtn">
+                <span>
+                    <i class="la la-rotate-left"></i>
+                    <span>Requery</span>
+                </span>
+            </button>
+            <button type="button" (click)="approveRefund(false)" class="btn btn-success m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Approve request" *ngIf="userFinance && approvedBtn">
+                <span>
+                    <i class="la la-check"></i>
+                    <span>Approve</span>
+                </span>
+            </button>
+            <!-- <button type="button" (click)="renewRefund(false)" class="btn btn-metal m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Cancel request" *ngIf="userFinance && cancelBtn">
+                <span>
+                    <i class="la la-close"></i>
+                    <span>Cancel</span>
+                </span>
+            </button> -->
+        </div>
+    </ng-container>
+
+    <ng-container mPortletBody>
+
+        <div class="m-portlet--body-progress" *ngIf="viewLoading">
+            <mat-spinner [diameter]="20"></mat-spinner>
+        </div>
+
+        <mat-tab-group>
+            <mat-tab label="Details">
+                <ng-template matTabContent>
+                    <form [formGroup]="refundForm" *ngIf="refundForm" class="m-form m-form--label-align-left- m-form--state-" id="m_form">
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-xl-10 offset-xl-1">
+                                    <div class="m-form__section m-form__section--first">
+                                        <div class="m-form__heading">
+                                            <h3 class="m-form__heading-title">Request Details</h3>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Requested Date</label>
+                                                <input type="text" formControlName="requestedDate" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Refund Number</label>
+                                                <input type="text" formControlName="refundNumber" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                           
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Status</label>
+                                                <input type="text" formControlName="status" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Invoice Number</label>
+                                                <input type="text" formControlName="invoiceNumber" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                           
+                                            <div class="col-lg-12 m-form__group-sub">
+                                                <label class="form-control-label">* Order Number</label>
+                                                <div class="m-accordion m-accordion--section m-accordion--padding-lg"
+                                                    id="m_section_1_content">
+                                                    <mat-accordion class="example-headers-align" multi>
+                                                        <mat-expansion-panel
+                                                            style="margin: 0 0;border-radius: 3px;background-color: #f4f5f8;">
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title>
+                                                                   Order Number
+                                                                </mat-panel-title>
+                                                            </mat-expansion-panel-header>
+                                                            <div class="m-timeline-3">
+                                                                <div class="m-timeline-3__items">
+                                                                    <div class="m-timeline-3__item-desc" style="margin-bottom: 0.25rem;color: #6f727d;">
+                                                                        <span class="m-timeline-3__item-text">
+                                                                            <ul>
+                                                                                <li *ngFor="let topping of orderList" >{{topping.description}}</li>
+                                                                              </ul>
+                                                                            
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+            
+                                                        </mat-expansion-panel>
+                                                    </mat-accordion>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-separator m-separator--dashed m-separator--md"></div>
+                                    <div class="m-form__section m-form__section--first">
+                                        <div class="m-form__heading">
+                                            <h3 class="m-form__heading-title">Customer Details</h3>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Full Name</label>
+                                                <input type="text" formControlName="fullName" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">IC No</label>
+                                                <input type="text" formControlName="icNo" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Company/Business Name</label>
+                                                <input type="text" formControlName="companyName" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Company/Business No</label>
+                                                <input type="text" formControlName="companyNo" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Email</label>
+                                                <input type="text" formControlName="email" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Contact No</label>
+                                                <input type="text" formControlName="phone" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Username</label>
+                                                <input type="text" formControlName="username" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Refund Amount (RM)</label>
+                                                <input type="text" formControlName="refundAmount" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-12 m-form__group-sub">
+                                                <label class="form-control-label">Reason for Request</label>
+                                                <textarea formControlName="reason" class="form-control m-input" [attr.disabled]="true"></textarea>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group m-form__group row">
+                                            <div class="col-lg-12 m-form__group-sub">
+                                                <label class="form-control-label">Attachment(s)</label>
+                                                <div class="m-demo" style="margin-bottom:0px">
+                                                    <div class="m-demo__preview" style="border:2px dashed #f7f7fa;padding:10px;min-height:85px">
+                                                        <div *ngFor="let item of refund.files" style="padding:10px">
+                                                            <div class="col-lg-6 m-form__group-sub">
+                                                                <div class="m-alert m-alert--outline alert alert-metal alert-dismissible fade show" role="alert" style="margin-bottom:0px">
+                                                                    <a href={{item.filePath}} target="_blank" download placement="bottom" ngbTooltip="View attachment">{{item.fileName}}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="m-separator m-separator--dashed m-separator--md"></div>
+                                    <div class="m-form__section m-form__section--first">
+                                        <div class="m-form__heading">
+                                            <h3 class="m-form__heading-title">Banking Details</h3>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Bank Name</label>
+                                                <input type="text" formControlName="bankName" class="form-control m-input" [attr.disabled]="true">
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Account Name</label>
+                                                <input type="text" formControlName="accountName" class="form-control m-input" [attr.disabled]="true">
+                                                <span class="m-form__help" *ngIf="enableAction">
+                                                    <label class="m-checkbox m-checkbox--state-warning" style="margin-bottom:0px">
+                                                        <input type="checkbox" (change)="updateRemark($event,1)">
+                                                        <label style="font-weight:300;font-size:11px;margin-bottom:0px">Invalid Account Name</label><span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">Account No</label>
+                                                <input type="text" formControlName="accountNo" class="form-control m-input" [attr.disabled]="true">
+                                                <span class="m-form__help" *ngIf="enableAction">
+                                                    <label class="m-checkbox m-checkbox--state-warning" style="margin-bottom:0px">
+                                                        <input type="checkbox" (change)="updateRemark($event,2)">
+                                                        <label style="font-weight:300;font-size:11px;margin-bottom:0px">Invalid Account No</label><span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">IC No/Company OR Business Reg No (BRN)</label>
+                                                <input type="text" formControlName="accountRef" class="form-control m-input" [attr.disabled]="true">
+                                                <span class="m-form__help" *ngIf="enableAction">
+                                                    <label class="m-checkbox m-checkbox--state-warning" style="margin-bottom:0px">
+                                                        <input type="checkbox" (change)="updateRemark($event,3)">
+                                                        <label style="font-weight:300;font-size:11px;margin-bottom:0px">Invalid IC No/Company OR Business Reg No (BRN)</label><span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" *ngIf="refundForm.controls['status'].value=='Processing'">
+                                            <div class="col-lg-12 m-form__group-sub">
+                                                <!-- <label class="form-control-label">Additional Remark</label> -->
+                                                <span class="m-form__help">
+                                                    <label class="m-checkbox m-checkbox--state-warning" style="margin-bottom:0px">
+                                                        <input type="checkbox" (change)="updateRemark($event,4)">
+                                                        <label style="font-weight:400;font-size:13px;margin-bottom:5px">Additional Remark</label><span></span>
+                                                    </label>
+                                                </span>
+                                                <input type="text" formControlName="remarkDesc" class="form-control m-input" (blur)="onBlurMethod()" maxlength="150"
+                                                    [attr.disabled]="disableRemarkDesc == true ? true : null">
+                                            </div>
+                                        </div>
+                                        <div *ngIf="refundForm.controls['remark'].invalid && (refundForm.controls['remark'].dirty || refundForm.controls['remark'].touched)">
+                                            <div *ngIf="refundForm.controls['remark'].errors.required">
+                                                <div class="form-group m-form__group row">
+                                                    <div class="col-lg-12 m-form__group-sub" style="text-align:center">
+                                                        <mat-error>Please tick the relevant action.</mat-error>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-separator m-separator--dashed m-separator--md" *ngIf="enableRemark"></div>
+                                    <div class="m-form__section m-form__section--first" *ngIf="enableRemark">
+                                        <div class="m-form__heading">
+                                            <h3 class="m-form__heading-title">Remark</h3>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-12 m-form__group-sub">
+                                                <div class="m-list-search">
+                                                    <div class="m-list-search__results" style="font-weight:500">
+                                                        <div class="m-list-search__result-item" *ngIf="action1Remark">
+                                                            <span class="m-list-search__result-item-icon"><i class="flaticon-danger m--font-warning"></i></span>
+                                                            <span class="m-list-search__result-item-text m--font-warning">{{action1Remark}}</span>
+                                                        </div>
+                                                        <div class="m-list-search__result-item" *ngIf="action2Remark">
+                                                            <span class="m-list-search__result-item-icon"><i class="flaticon-danger m--font-warning"></i></span>
+                                                            <span class="m-list-search__result-item-text m--font-warning">{{action2Remark}}</span>
+                                                        </div>
+                                                        <div class="m-list-search__result-item" *ngIf="action3Remark">
+                                                            <span class="m-list-search__result-item-icon"><i class="flaticon-danger m--font-warning"></i></span>
+                                                            <span class="m-list-search__result-item-text m--font-warning">{{action3Remark}}</span>
+                                                        </div>
+                                                        <div class="m-list-search__result-item" *ngIf="action4Remark">
+                                                            <span class="m-list-search__result-item-icon"><i class="flaticon-danger m--font-warning"></i></span>
+                                                            <span class="m-list-search__result-item-text m--font-warning">{{action4Remark}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Timeline">
+                <ng-template matTabContent>
+                    <div class="m-portlet__body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="m-timeline-1 m-timeline-1--fixed">
+                                    <div class="m-timeline-1__items">
+                                        <div class="m-timeline-1__marker"></div>
+                                        <div class="m-timeline-1__item m-timeline-1__item--left m-timeline-1__item--first"></div>
+                                        <div *ngFor="let item of timeline" class="m-timeline-1__item m-timeline-1__item--{{getTimelineSideByStatus(item.status)}} m--margin-bottom-50">
+                                            <div class="m-timeline-1__item-circle">
+                                                <div class="m--bg-{{getTimelineStateByStatus(item.status)}}"></div>
+                                            </div>
+                                            <div class="m-timeline-1__item-arrow"></div>
+                                            <span class="m-timeline-1__item-time m--font-brand">{{item.revisedDate | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+                                            <div class="m-timeline-1__item-content">
+                                                <div class="m-timeline-1__item-title">
+                                                    {{item.remark}}
+                                                </div>
+                                                <div class="m-timeline-1__item-body m--margin-top-5">
+                                                    <div class="m-timeline-1__item-body" *ngIf="item.remarkList.length > 0">
+                                                        <div *ngFor="let remark of item.remarkList">- {{remark.msg}}</div>
+                                                    </div>
+                                                    <div class="m--font-metal m--margin-top-10" style="font-size:11px">
+                                                        By {{item.fullName}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>        
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+
+    </ng-container>
+    
+</m-portlet>

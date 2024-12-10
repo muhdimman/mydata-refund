@@ -1,0 +1,404 @@
+<m-portlet [options]="{enableSticky: true}">
+    <!-- use ng-container[mPortletHeadTitle] for the title -->
+    <ng-container mPortletHeadTitle>
+        <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">
+                {{ getComponentTitle() }}
+            </h3>
+        </div>
+    </ng-container>
+    <!-- use ng-container[mPortletHeadTools] for the head button -->
+    <ng-container mPortletHeadTools>
+        <div class="m-buttons--wrapper">
+            <button type="button" (click)="goBack()" class="btn btn-secondary m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Back to the refund list">
+                <span>
+                    <i class="la la-arrow-left"></i>
+                    <span>Back</span>
+                </span>
+            </button>
+            <button type="button" (click)="reset()" class="btn btn-secondary m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Reset changes" *ngIf="prepaidBalanceValue > 0">
+                <span>
+                    <i class="flaticon-refresh"></i>
+                    <span>Reset</span>
+                </span>
+            </button>
+            <button (click)="onSumbit(false);uploader.uploadAll()" class="btn btn-primary m-btn m-btn--icon m-btn--wide m-btn--md" matTooltip="Submit request" 
+                *ngIf="prepaidBalanceValue > 0" [attr.disabled]="disableButton == true ? true : null">
+                <span>
+                    <i class="la la-check"></i>
+                    <span>Submit</span>
+                </span>
+            </button>
+        </div>
+    </ng-container>
+    <!-- use ng-container[mPortletBody] for the body content -->
+    <ng-container mPortletBody>
+        <form [formGroup]="refundForm" *ngIf="refundForm" class="m-form m-form--label-align-left- m-form--state-"
+            id="m_form">
+            <!--begin: Form Body -->
+            <div class="m-portlet__body">
+                <div class="row">
+                    <div class="col-xl-10 offset-xl-1">
+                        <div class="m-form__section m-form__section--first">
+                            <div class="m-form__heading">
+                                <h3 class="m-form__heading-title">Customer Details</h3>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Full Name</label>
+                                    <input type="text" formControlName="fullName" name="fullName" class="form-control m-input" maxlength="150">
+                                    <div *ngIf="refundForm.controls['fullName'].invalid && (refundForm.controls['fullName'].dirty || refundForm.controls['fullName'].touched)">
+                                        <div *ngIf="refundForm.controls['fullName'].errors.required">
+                                            <mat-error>Full Name is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* IC No</label>
+                                    <input type="text" formControlName="icNo" name="icNo" class="form-control m-input" maxlength="20">
+                                    <div *ngIf="refundForm.controls['icNo'].invalid && (refundForm.controls['icNo'].dirty || refundForm.controls['icNo'].touched)">
+                                        <div *ngIf="refundForm.controls['icNo'].errors.required">
+                                            <mat-error>IC No is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">Company/Business Name</label>
+                                    <input type="text" formControlName="companyName" name="companyName" class="form-control m-input" maxlength="150">
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">Company/Business Reg No</label>
+                                    <input type="text" formControlName="companyNo" name="companyNo" class="form-control m-input" maxlength="30">
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Email</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="flaticon-email"></i>
+                                            </span>
+                                        </div>
+                                        <input type="email" formControlName="email" name="email" class="form-control m-input" maxlength="150">
+                                    </div>
+                                    <div *ngIf="refundForm.controls['email'].invalid && (refundForm.controls['email'].dirty || refundForm.controls['email'].touched)">
+                                        <div *ngIf="refundForm.controls['email'].errors.required">
+                                            <mat-error>Email is required.</mat-error>
+                                        </div>
+                                        <div *ngIf="refundForm.controls['email'].errors.email">
+                                            <mat-error>Email is not valid.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Contact No</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="la la-phone"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" formControlName="phone" name="phone" class="form-control m-input" maxlength="15">
+                                    </div>
+                                    <div *ngIf="refundForm.controls['phone'].invalid && (refundForm.controls['phone'].dirty || refundForm.controls['phone'].touched)">
+                                        <div *ngIf="refundForm.controls['phone'].errors.required">
+                                            <mat-error>Contact No is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Username</label>
+                                    <input type="text" formControlName="username" name="username" class="form-control m-input" [attr.disabled]="true">
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Prepaid Balance (RM)</label>
+                                    <input type="text" formControlName="prepaidBalance" name="prepaidBalance" class="form-control m-input" [attr.disabled]="true">
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-12 m-form__group-sub">
+                                    <label class="form-control-label">* Reason for Request</label>
+                                    <textarea formControlName="reason" name="reason" class="form-control m-input" maxlength="255"></textarea>
+                                    <div *ngIf="refundForm.controls['reason'].invalid && (refundForm.controls['reason'].dirty || refundForm.controls['reason'].touched)">
+                                        <div *ngIf="refundForm.controls['reason'].errors.required">
+                                            <mat-error>Reason for Request is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-12 m-form__group-sub">
+                                    <label class="form-control-label">Attachment(s)</label>
+                                    <div id="fileSelector">
+                                        <input type="file" name="fileUpload" id="fileUpload" multiple ng2FileSelect [uploader]="uploader">
+                                    </div>
+                                    <!-- <div>
+                                        <div class="row uploadList" *ngFor="let item of uploader.queue">
+                                            <div class="col-sm-4">{{item.file.name}}</div>
+                                            <div class="col-sm-4">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" 
+                                                    [ngStyle]="{'width':item.progress+'%'}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                    <button type="button" class="btn btn-dark" (click)="item.upload()">Upload</button>
+                                                    <button type="button" class="btn btn-danger" (click)="item.remove()">Cancel</button>
+                                            </div>
+                                        </div>                        
+                                    </div> -->
+                                    <!-- <div class="row" *ngIf="uploader?.queue?.length > 0">
+                                        <button type="button" class="btn btn-primary" (click)="uploader.uploadAll()">Upload All</button>
+                                    </div> -->
+                                    <div class="m-demo" style="margin-bottom:0px">
+                                        <div class="m-demo__preview" style="border:2px dashed #f7f7fa;padding:10px;min-height:85px">
+                                            <div *ngFor="let item of uploader.queue" style="padding:10px">
+                                                <div class="col-lg-6 m-form__group-sub">
+                                                    <div class="m-alert m-alert--outline alert alert-metal alert-dismissible fade show" role="alert" style="margin-bottom:0px">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="item.remove()">
+                                                        </button>
+                                                        {{item.file.name}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- required attachment -->
+                                    <!-- <div *ngIf="noAttachments">
+                                        <div *ngIf="uploader?.queue?.length == 0">
+                                            <mat-error>Attachment(s) is required.</mat-error>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-separator m-separator--dashed m-separator--md"></div>
+                        <div class="m-form__section m-form__section--first">
+                            <div class="m-form__heading">
+                                <h3 class="m-form__heading-title">
+                                    Banking Details
+                                    <i data-toggle="m-tooltip" data-width="auto" class="m-form__heading-help-icon flaticon-info" 
+                                        placement="right" ngbTooltip="Refund to credit card is NOT acceptable."></i>
+                                </h3>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <!-- <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Bank Name</label>
+                                    <input type="text" formControlName="bankName" name="bankName" class="form-control m-input">
+                                    <div *ngIf="refundForm.controls['bankName'].invalid && (refundForm.controls['bankName'].dirty || refundForm.controls['bankName'].touched)">
+                                        <div *ngIf="refundForm.controls['bankName'].errors.required">
+                                            <mat-error>Bank Name is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Bank Name</label>
+                                    <select formControlName="bankName" name="bankName" class="form-control m-input">
+                                        <option  *ngFor="let item of bankList" value="{{item.name}}">{{item.name}}</option>
+                                        <!-- <option value="Affin Bank">Affin Bank</option>
+                                        <option value="Agro Bank">Agro Bank</option>
+                                        <option value="Alliance Bank">Alliance Bank</option>
+                                        <option value="Ambank">Ambank</option>
+                                        <option value="Al Rajhi Bank">Al Rajhi Bank</option>
+                                        <option value="Bank Islam">Bank Islam</option>
+                                        <option value="Bank Muamalat">Bank Muamalat</option>
+                                        <option value="Bank Rakyat">Bank Rakyat</option>
+                                        <option value="Bank Simpanan Nasional">Bank Simpanan Nasional</option>
+                                        <option value="CIMB Bank">CIMB Bank</option>
+                                        <option value="Citibank">Citibank</option>
+                                        <option value="Hong Leong Bank">Hong Leong Bank</option>
+                                        <option value="HSBC Bank">HSBC Bank</option>
+                                        <option value="Maybank">Maybank</option>
+                                        <option value="OCBC Bank">OCBC Bank</option>
+                                        <option value="Public Bank">Public Bank</option>
+                                        <option value="RHB Bank">RHB Bank</option>
+                                        <option value="Standard Chartered">Standard Chartered</option>
+                                        <option value="UOB Bank">UOB Bank</option> -->
+                                    </select>
+                                    <div *ngIf="refundForm.controls['bankName'].invalid && (refundForm.controls['bankName'].dirty || refundForm.controls['bankName'].touched)">
+                                        <div *ngIf="refundForm.controls['bankName'].errors.required">
+                                            <mat-error>Bank Name is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Account Name</label>
+                                    <input type="text" formControlName="accountName" name="accountName" class="form-control m-input" maxlength="150">
+                                    <div *ngIf="refundForm.controls['accountName'].invalid && (refundForm.controls['accountName'].dirty || refundForm.controls['accountName'].touched)">
+                                        <div *ngIf="refundForm.controls['accountName'].errors.required">
+                                            <mat-error>Account Name is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* Account No</label>
+                                    <input type="text" formControlName="accountNo" name="accountNo" class="form-control m-input" maxlength="30">
+                                    <div *ngIf="refundForm.controls['accountNo'].invalid && (refundForm.controls['accountNo'].dirty || refundForm.controls['accountNo'].touched)">
+                                        <div *ngIf="refundForm.controls['accountNo'].errors.required">
+                                            <mat-error>Account No is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 m-form__group-sub">
+                                    <label class="form-control-label">* IC No/Company OR Business Reg No (BRN)</label>
+                                    <input type="text" formControlName="accountRef" name="accountRef" class="form-control m-input" maxlength="30">
+                                    <div *ngIf="refundForm.controls['accountRef'].invalid && (refundForm.controls['accountRef'].dirty || refundForm.controls['accountRef'].touched)">
+                                        <div *ngIf="refundForm.controls['accountRef'].errors.required">
+                                            <mat-error>IC No/Company OR Business Reg No (BRN) is required.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-separator m-separator--dashed m-separator--md"></div>
+                        <div class="m-form__section m-form__section--first">
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-12 m-form__group-sub">
+                                    <label class="m-checkbox m-checkbox--state-brand" style="margin-bottom:0px">
+                                        <input type="checkbox"  (change)="agreeDeclaration($event)">
+                                        <label>
+                                            I hereby declare that the information regarding my details and banking details given by me in this refund form and in any
+                                            document attached is true, correct and complete.
+                                        </label><span></span>
+                                    </label>
+                                    <div *ngIf="noDeclaration">
+                                        <mat-error>Declaration is required.</mat-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--begin::Section-->
+        <div class="m-section m-section--last">
+            <div class="m-section__content">
+                <!--begin::Preview-->
+                <div class="m-demo">
+                    <div class="m-demo__preview">
+                        <div class="m-list-search">
+                            <div class="m-list-search__results">
+                                <span class="m-list-search__result-category m-list-search__result-category--first">
+                                    Note:
+                                </span>
+                                <!-- <div class="m-list-search__result-item">
+                                    <span class="m-list-search__result-item-icon">
+                                        <i class="flaticon-add-label-button m--font-primary"></i>
+                                    </span>
+                                    <span class="m-list-search__result-item-text">
+                                        Refund Request must be attached with print screen balance from MYDATA Portal.
+                                    </span>
+                                </div> -->
+                                <div class="m-list-search__result-item">
+                                    <span class="m-list-search__result-item-icon">
+                                        <i class="flaticon-add-label-button m--font-primary"></i>
+                                    </span>
+                                    <span class="m-list-search__result-item-text">
+                                        All refund will be executed through banking details provided by you within 30 working days 
+                                        from the date BDW receive the refund form.
+                                    </span>
+                                </div>
+                                <div class="m-list-search__result-item">
+                                    <span class="m-list-search__result-item-icon">
+                                        <i class="flaticon-add-label-button m--font-primary"></i>
+                                    </span>
+                                    <span class="m-list-search__result-item-text">
+                                        Incomplete details and wrong information such as I/C number and banking details, will delay 
+                                        the refund process and it may take up to 60 days from the date BDW receive the refund form.
+                                    </span>
+                                </div>
+                                <div class="m-list-search__result-item">
+                                    <span class="m-list-search__result-item-icon">
+                                        <i class="flaticon-add-label-button m--font-primary"></i>
+                                    </span>
+                                    <span class="m-list-search__result-item-text">
+                                        For claims below RM1.00 (Refund Form require), kindly walk in to MYDATA counter at:
+                                    </span>
+                                </div>
+                                <div class="row" style="margin-left:30px">
+                                    <div class="col-lg-3" style="padding-right:5px;padding-left:0px;">
+                                        <label class="m-option" style="padding:10px">
+                                            <span class="m-option__label">
+                                                <span class="m-option__head">
+                                                    <span class="m-option__title" style="font-size:12px;font-weight:400;">
+                                                        KL Sentral
+                                                    </span>
+                                                </span>
+                                                <span class="m-option__body" style="padding-top:0px">
+                                                    Menara SSM@Sentral,<br />
+                                                    Tingkat 17, No 7, Jalan Stesen Sentral 5,<br />
+                                                    Kuala Lumpur Sentral,<br />
+                                                    50623 Kuala Lumpur.
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-3" style="padding-right:5px;padding-left:0px;">
+                                        <label class="m-option" style="padding:10px">
+                                            <span class="m-option__label">
+                                                <span class="m-option__head">
+                                                    <span class="m-option__title" style="font-size:12px;font-weight:400;">
+                                                        Shah Alam
+                                                    </span>
+                                                </span>
+                                                <span class="m-option__body" style="padding-top:0px">
+                                                    Tingkat 1, Blok 9, 10 & 11, Kompleks KPPMS,<br />
+                                                    Lot 291, Jalan RU 3/9A, Seksyen 3,<br />
+                                                    40000 Shah Alam, Selangor.
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-3" style="padding-right:5px;padding-left:0px;">
+                                        <label class="m-option" style="padding:10px">
+                                            <span class="m-option__label">
+                                                <span class="m-option__head">
+                                                    <span class="m-option__title" style="font-size:12px;font-weight:400;">
+                                                        Johor Bahru
+                                                    </span>
+                                                </span>
+                                                <span class="m-option__body" style="padding-top:0px">
+                                                    Podium 4B & 5, Menara Ansar,<br />
+                                                    65 Jalan Trus,<br />
+                                                    80000 Johor Bahru, Johor.
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-3" style="padding-right:5px;padding-left:0px;">
+                                        <label class="m-option" style="padding:10px">
+                                            <span class="m-option__label">
+                                                <span class="m-option__head">
+                                                    <span class="m-option__title" style="font-size:12px;font-weight:400;">
+                                                        Putrajaya
+                                                    </span>
+                                                </span>
+                                                <span class="m-option__body" style="padding-top:0px">
+                                                    Aras G,<br />
+                                                    Kementerian Perdagangan Dalam Negeri Dan Hal Ehwal Pengguna (KPDNHEP),<br />
+                                                    No. 13, Persiaran Perdana,<br />
+                                                    Presint 2, Pusat Pentadbiran Kerajaan Persekutuan,<br />
+                                                    62623 Putrajaya,<br />
+                                                    Wilayah Persekutuan Putrajaya.
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Preview-->
+            </div>
+        </div>
+    </ng-container>
+</m-portlet>

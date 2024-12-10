@@ -1,0 +1,21 @@
+{
+    "dbHost": "127.0.0.1",
+    "dbName": "mydata-refund",
+    "dbUser": "apiuser",
+    "dbPassword": "xs@4pImysql",
+    "dbCharset": "utf8",
+    "loginUrl": "http://172.19.194.138:7171",
+    "backendUrl": "http://172.19.194.139:4250",
+    "reportUrl": "http://172.19.194.138:8080/jasperserver/rest_v2/reports",
+    "appUrl": "http://172.19.194.139:4250",
+    "emailSMTP": "smtp.gmail.com",
+    "emailSMTPPort": 465,
+    "emailUser": "companyemail15@gmail.com",
+    "emailPass": "arif0123456789",
+    "dbV2Host": "172.19.194.138",
+    "dbV2Name": "mydata-v2",
+    "dbV2User": "apiuser",
+    "dbV2Password": "xs@4pImysql",
+    "dbV2Charset": "utf8",
+    "port": 4250
+}

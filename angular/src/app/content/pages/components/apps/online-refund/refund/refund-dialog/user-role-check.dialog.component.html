@@ -1,0 +1,34 @@
+<div class="m-portlet" [ngClass]="{ 'm-portlet--body-progress' : viewLoading, 'm-portlet--body-progress-overlay' : loadingAfterSubmit }">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon m--hide">
+                        <i class="la la-gear"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        Attention
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form">
+            <div class="m-portlet__body">
+    
+                <div class="m-portlet__body-progress">
+                    <mat-spinner [diameter]="20"></mat-spinner>
+                </div>
+    
+    
+                <div class="m-form__section m-form__section--first">
+                    Unable to proceed. Only Account Admin eligible to make refund request.
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit text-right">
+                <div class="m-form__actions m-form__actions m-form__actions--solid">
+                    <button type="button" mat-raised-button cdkFocusInitial (click)="closeDialog()" matTooltip="Close">Close</button>&nbsp;
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>

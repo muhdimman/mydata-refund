@@ -1,0 +1,169 @@
+<m-portlet [loading$]="dataSource.loading$">
+    <ng-container mPortletHeadTitle>
+        <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">
+                {{ getComponentTitle() }}
+            </h3>
+        </div>
+    </ng-container>
+    <ng-container mPortletHeadTools>
+        <div class="m-buttons--wrapper">
+            <button type="button" (click)="exportExcel()"
+                class="btn btn-outline-success m-btn m-btn--icon m-btn--wide m-btn--md"
+                matTooltip="Download in excel format" *ngIf="dataSource.hasItems && exportEnable">
+                <span>
+                    <i class="fa fa-file-excel"></i>
+                    <span>Export to Excel</span>
+                </span>
+            </button>
+        </div>
+    </ng-container>
+
+    <ng-container mPortletBody>
+        <div class="m-form">
+            <div class="m-form__filtration" [hidden]="!filterEnable">
+                <div class="row align-items-center">
+                    <div class="col-md-2 m--margin-bottom-10-mobile">
+                        <div class="m-form__control">
+                            <mat-form-field class="mat-form-field-fluid">
+                                <input matInput #dateFromInput [matDatepicker]="dateFrom" placeholder="Date From" (dateChange)="changeEvent()">
+                                <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+                                <mat-datepicker #dateFrom disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-2 m--margin-bottom-10-mobile">
+                        <div class="m-form__control">
+                            <mat-form-field class="mat-form-field-fluid">
+                                <input matInput #dateToInput [matDatepicker]="dateTo" placeholder="Date To" (dateChange)="changeEvent()">
+                                <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+                                <mat-datepicker #dateTo disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-2 m--margin-bottom-10-mobile">
+                        <div class="m-form__control">
+                            <mat-form-field class="mat-form-field-fluid">
+                                <input matInput #searchInput placeholder="Search" class="mat-form-field mat-form-field-fluid">
+                                <mat-hint align="start">
+                                    <strong>Search in all fields</strong>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mat-table__wrapper">
+            
+            <mat-table class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="" matSortDirection="" matSortDisableClear>
+                
+                <ng-container matColumnDef="requestedDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Requested Date</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.requestedDate | date:'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="processedDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Processed Date</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.processedDate | date:'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="requeryDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Requery Date</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.requeryDate | date:'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="approvedDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Approved Date</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.approvedDate | date:'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="refundNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Refund Number</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.refundNumber}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.fullName}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="icNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>IC No</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.icNo}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="username">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.username}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="refundAmount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Refund Amount (RM)</mat-header-cell>
+                    <mat-cell *matCellDef="let refund" style="padding-right:28px;">
+                        {{refund.refundAmount| number:'1.2-2'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">
+                        <span
+                            class="m-badge m-badge--{{ getItemCssClassByStatus(refund.status) }} m-badge--wide">{{ getItemStatusString(refund.status) }}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="aging">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Aging (Days)</mat-header-cell>
+                    <mat-cell *matCellDef="let refund" style="padding-right:28px;">{{refund.aging}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="remark">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Remark</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.remark}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="reason">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Reason</mat-header-cell>
+                    <mat-cell *matCellDef="let refund">{{refund.reason}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef style="padding-left:10px;">
+                        Actions
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let refund">
+                        <span style="overflow: visible; position: relative">
+                            <a [routerLink]="['/refund/edit']" [queryParams]="{id:refund.id}" matTooltip="View"
+                                class="m-portlet__nav-link btn m-btn m-btn--hover-metal m-btn--icon m-btn--icon-only m-btn--pill">
+                                <i class="la la-edit"></i>
+                            </a>
+                            <a (click)="downloadRefund(refund.id)" matTooltip="Download"
+                                class="m-portlet__nav-link btn m-btn-primary m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill">
+                                <i class="la la-download"></i>
+                            </a>
+                            <a (click)="processRefund(refund.id)" matTooltip="Process" *ngIf="refund.status=='New'"
+                                class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill">
+                                <i class="la la-cogs"></i>
+                            </a>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+
+            <div class="mat-table__message" *ngIf="!dataSource.hasItems">No records found</div>
+        </div>
+
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+            <mat-spinner [diameter]="20" *ngIf="viewLoading"></mat-spinner>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async"
+                [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+
+    </ng-container>
+
+</m-portlet>

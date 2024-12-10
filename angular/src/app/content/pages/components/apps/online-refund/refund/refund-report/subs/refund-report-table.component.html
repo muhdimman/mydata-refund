@@ -1,0 +1,204 @@
+<!-- start::FILTERS & GROUP ACTIONS -->
+<div class="m-form">
+    <!-- start::FILTERS -->
+    <div class="m-form__filtration">
+        <div class="row align-items-center">
+            <div class="col-md-2 m--margin-bottom-10-mobile">
+                <div class="m-form__control">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-select [(value)]="filterStatus" (selectionChange)="loadRefundReport()" class="mat-form-field mat-form-field-fluid">
+                            <mat-option value="">All</mat-option>
+                            <mat-option value="New">New</mat-option>
+                            <mat-option value="Processing">Processing</mat-option>
+                            <mat-option value="Requery">Requery</mat-option>
+                            <!-- <mat-option value="To Process">To Process</mat-option> -->
+                            <mat-option value="Approved">Approved</mat-option>
+                            <mat-option value="Rejected">Rejected</mat-option>
+                        </mat-select>
+                        <mat-hint align="start">
+                            <strong>Filter by Status</strong>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-2 m--margin-bottom-10-mobile">
+                <mat-form-field class="mat-form-field-fluid">
+                    <input matInput placeholder="Search refund" #searchInput placeholder="Search" class="mat-form-field mat-form-field-fluid">
+                    <mat-hint align="start">
+                        <strong>Search in all fields</strong>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- end::FILTERS -->
+</div>
+<!-- end::FILTERS & GROUP ACTIONS -->
+
+<!-- MATERIAL TABLE | Binded to datasources -->
+<div class="mat-table__wrapper">
+    <mat-table class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="" matSortDirection="" matSortDisableClear>
+        
+        <ng-container matColumnDef="requestedDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Requested Date</mat-header-cell>
+            <mat-cell *matCellDef="let refund">{{refund.requestedDate | date:'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="refundNumber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Refund Number</mat-header-cell>
+            <mat-cell *matCellDef="let refund">{{refund.refundNumber}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fullName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</mat-header-cell>
+            <mat-cell *matCellDef="let refund">{{refund.fullName}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="icNo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>IC No</mat-header-cell>
+            <mat-cell *matCellDef="let refund">{{refund.icNo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+            <mat-cell *matCellDef="let refund">{{refund.username}}</mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="refundAmount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Refund Amount (RM)</mat-header-cell>
+            <mat-cell *matCellDef="let refund" style="padding-right:20px;">{{refund.refundAmount| number:'1.2-2'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+            <mat-cell *matCellDef="let refund">
+                <span class="m-badge m-badge--{{ getItemCssClassByStatus(refund.status) }} m-badge--wide">{{ getItemStatusString(refund.status) }}</span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="aging">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Aging (Days)</mat-header-cell>
+            <mat-cell *matCellDef="let refund" style="padding-right:30px;">{{refund.aging}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="remark">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Remark</mat-header-cell>
+            <mat-cell *matCellDef="let refund">{{refund.remark}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+                Actions
+            </mat-header-cell>
+            <mat-cell *matCellDef="let refund">
+                <a [routerLink]="['/refund/edit']" [queryParams]="{id:refund.id}" mat-icon-button color="primary" matTooltip="View refund request">
+                    <mat-icon>create</mat-icon>
+                </a>&nbsp;
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <div class="mat-table__message" *ngIf="!dataSource.hasItems">No records found.</div>
+</div>
+
+<!-- <div class="m_datatable m-datatable m-datatable--default m-datatable--loaded">
+    <table class="m-datatable__table" style="display: block; min-height: 300px; overflow-x: auto;font-family:Poppins;">
+        <thead class="m-datatable__head">
+            <tr class="m-datatable__row">
+                <th class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check">
+                    <span>
+                        <label class="m-checkbox m-checkbox--single m-checkbox--all m-checkbox--solid m-checkbox--brand">
+                            <input type="checkbox">&nbsp;<span></span>
+                        </label>
+                    </span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort" style="width:15%;padding-left:20px">
+                    <span>Purchase Date</span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort" style="width:30%">
+                    <span>Full Name</span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort" style="width:15%">
+                    <span>Username</span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort" style="width:10%">
+                    <span>Status</span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort" style="width:10%;text-align:center">
+                    <span>Aging (Days)</span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort" style="width:15%;text-align:right;padding-right:20px">
+                    <span>Refund Amount (RM)</span>
+                </th>
+                <th class="m-datatable__cell m-datatable__cell--sort">
+                    <span>Action</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="m-datatable__body">
+            <tr *ngFor="let item of refundResult" class="m-datatable__row">
+                <td class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check" data-field="RecordID">
+                    <span>
+                        <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+                            <input type="checkbox" value="1">&nbsp;<span></span>
+                        </label>
+                    </span>
+                </td>
+                <td class="m-datatable__cell" style="width:15%;padding-left:20px">
+                    <span>{{item.requestedDate | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+                </td>
+                <td class="m-datatable__cell" style="width:30%">
+                    <span>{{item.fullName}}</span>
+                </td>
+                <td class="m-datatable__cell" style="width:15%">
+                    <span>{{item.username}}</span>
+                </td>
+                <td class="m-datatable__cell" style="width:10%">
+                    <span>
+                        <span class="m-badge m-badge--{{ getItemCssClassByStatus(item.status) }} m-badge--wide">{{ getItemStatusString(item.status) }}</span>
+                    </span>
+                </td>
+                <td class="m-datatable__cell" style="width:10%;text-align:center">
+                    <span>{{item.aging}}</span>
+                </td>
+                <td class="m-datatable__cell" style="width:15%;text-align:right;padding-right:20px">
+                    <span>{{item.prepaidBalance| number:'1.2-2'}}</span>
+                </td>
+                <td class="m-datatable__cell">
+                    <span style="overflow: visible; position: relative; width: 110px;">
+                        <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-metal m-btn--icon m-btn--icon-only m-btn--pill" title="View ">
+                            <i class="la la-edit"></i>
+                        </a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="!dataSource.hasItems" class="m-datatable__body" style="padding: 30px;text-align: center;">
+            <span class="m-datatable--error" style="font-size:13px;font-weight:300;font-family:Poppins;">No records found</span>
+        </tbody>
+    </table>
+</div> -->
+
+<div class="mat-table__bottom m--margin-top-15" *ngIf="dataSource.hasItems">
+    <table style="font-size:15px;font-weight:500;">
+        <tr>
+            <td style="text-align:right;width:600px">Total Request :</td>
+            <td style="text-align:right;width:150px;padding-right:25px;">{{refundSummary.count}}</td>
+        </tr>
+        <tr>
+            <td style="text-align:right;width:600px">Total Refund Amount :</td>
+            <td style="text-align:right;width:150px;padding-right:25px;">RM {{refundSummary.total | number:'1.2-2'}}</td>
+        </tr>
+    </table>
+</div>
+
+<!-- start: BOTTOM -->
+<div class="mat-table__bottom">
+    <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+</div>
+<!-- end: BOTTOM -->

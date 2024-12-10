@@ -1,0 +1,88 @@
+<div class="m-portlet" [ngClass]="{ 'm-portlet--body-progress' : viewLoading, 'm-portlet--body-progress-overlay' : loadingAfterSubmit }">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon m--hide">
+                        <i class="la la-gear"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        Attention
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form">
+            <div class="m-portlet__body">
+    
+                <div class="m-portlet__body-progress">
+                    <mat-spinner [diameter]="20"></mat-spinner>
+                </div>
+    
+                <div class="m-form__section m-form__section--first" *ngIf="prepaidBalance < 0">
+                    You don't have prepaid/e-wallet balance in MYDATA Portal.<br/><br/>
+                    This refund application is only applicable for MYDATA Users who still have prepaid/e-wallet balance in the Account.
+                </div>
+                <div class="m-form__section m-form__section--first" *ngIf="prepaidBalance == 0.00">
+                    Your prepaid/e-wallet balance is RM{{prepaidBalance | number:'1.2-2'}}.<br/><br/>
+                    This refund application is only applicable for MYDATA Users who still have prepaid/e-wallet balance in the Account.
+                </div>
+                <div class="m-form__section m-form__section--first" *ngIf="prepaidBalance > 0">
+                    Your prepaid/e-wallet balance is RM{{prepaidBalance | number:'1.2-2'}}.<br/><br/>
+                    For refund below RM1.00, kindly walk in to MYDATA counter at:
+                    <ul>
+                        <li>
+                            <span style="font-weight:600;">
+                                KL Sentral<br/>
+                            </span>
+                            <span>
+                                Menara SSM@Sentral,<br />
+                                Tingkat 17, No 7, Jalan Stesen Sentral 5,<br />
+                                Kuala Lumpur Sentral,<br />
+                                50623 Kuala Lumpur.
+                            </span>
+                        </li>
+                        <li>
+                            <span style="font-weight:600;">
+                                Shah Alam<br/>
+                            </span>
+                            <span>
+                                Tingkat 1, Blok 9, 10 & 11, Kompleks KPPMS,<br />
+                                Lot 291, Jalan RU 3/9A, Seksyen 3,<br />
+                                40000 Shah Alam, Selangor.
+                            </span>
+                        </li>
+                        <li>
+                            <span style="font-weight:600;">
+                                Johor Bahru<br/>
+                            </span>
+                            <span>
+                                Podium 4B & 5, Menara Ansar,<br />
+                                65 Jalan Trus,<br />
+                                80000 Johor Bahru, Johor.
+                            </span>
+                        </li>
+                        <li>
+                            <span style="font-weight:600;">
+                                Putrajaya<br/>
+                            </span>
+                            <span>
+                                Aras G,<br />
+                                Kementerian Perdagangan Dalam Negeri Dan Hal Ehwal Pengguna (KPDNHEP),<br />
+                                No. 13, Persiaran Perdana,<br />
+                                Presint 2, Pusat Pentadbiran Kerajaan Persekutuan,<br />
+                                62623 Putrajaya,<br />
+                                Wilayah Persekutuan Putrajaya.
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit text-right">
+                <div class="m-form__actions m-form__actions m-form__actions--solid" style="padding:15px">
+                    <button type="button" mat-raised-button cdkFocusInitial (click)="closeDialog()" matTooltip="Close">Close</button>&nbsp;
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>

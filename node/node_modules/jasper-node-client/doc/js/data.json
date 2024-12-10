@@ -1,0 +1,288 @@
+{
+    "project": {
+        "name": "jasper_report_node_client",
+        "description": "Cliente de Jasper Report que permite consumir el servicio de Jasper Server",
+        "version": "1.0.0",
+        "url": ""
+    },
+    "files": {
+        "src/js/Base64Encoder/Base64Encoder.js": {
+            "name": "src/js/Base64Encoder/Base64Encoder.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/RestClient/RestClient.js": {
+            "name": "src/js/RestClient/RestClient.js",
+            "modules": {},
+            "classes": {
+                "RestClient": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/JasperClient.js": {
+            "name": "src/js/JasperClient.js",
+            "modules": {
+                "JasperClient": 1
+            },
+            "classes": {
+                "JasperClient": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "JasperClient": {
+            "name": "JasperClient",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "RestClient": 1,
+                "JasperClient": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/js/JasperClient.js",
+            "line": 13,
+            "description": "Modulo que envuelve la clase JasperClient. Recibe por parametro un objeto obj = {baseUrl: '', userName: '', password: ''}",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Los parametros basicos para el consumo del servicio. obj = {baseUrl: '', userName: '', password: ''}",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            }
+        }
+    },
+    "classes": {
+        "RestClient": {
+            "name": "RestClient",
+            "shortname": "RestClient",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JasperClient",
+            "file": "src/js/RestClient/RestClient.js",
+            "line": 2,
+            "description": "Class RestClient Esta clase es un adaptador generico para un cliente REST, solo se usa el metodo get que es el necesario para hacer la peticion"
+        },
+        "JasperClient": {
+            "name": "JasperClient",
+            "shortname": "JasperClient",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "JasperClient",
+            "namespace": "",
+            "file": "src/js/JasperClient.js",
+            "line": 13,
+            "description": "Esta clase es un cliente que permite consumir la API RESTful de Jasper Reports."
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "src/js/Base64Encoder/Base64Encoder.js",
+            "line": 3,
+            "description": "Esta funcion hace las veces de adaptador para la funcion btoa",
+            "params": [
+                {
+                    "name": "string",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "RestClient"
+        },
+        {
+            "file": "src/js/RestClient/RestClient.js",
+            "line": 27,
+            "description": "Constructor de la clase RestClient.",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "La URL base de la peticion",
+                    "type": "String"
+                },
+                {
+                    "name": "headers",
+                    "description": "Las cabeceras a enviar en la respuesta hacia el navegador",
+                    "type": "String"
+                }
+            ],
+            "class": "RestClient"
+        },
+        {
+            "file": "src/js/RestClient/RestClient.js",
+            "line": 41,
+            "description": "Metodo que envia una peticion GET con los parametros pasados",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "Ruta hacia la ubicacion del archivo",
+                    "type": "String"
+                },
+                {
+                    "name": "endpoint",
+                    "description": "El endpoint que representa al reporte en si",
+                    "type": "String"
+                },
+                {
+                    "name": "params",
+                    "description": "Objeto que contiene los parametros que se le pasaran al reporte",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Callback que maneja el exito de la respuesta contiene la data y las cabeceras",
+                    "type": "Function"
+                },
+                {
+                    "name": "errorHandler",
+                    "description": "Calback qque devuelve los error al realizar la peticion",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "void"
+            },
+            "class": "RestClient"
+        },
+        {
+            "file": "src/js/JasperClient.js",
+            "line": 46,
+            "class": "JasperClient",
+            "module": "JasperClient"
+        },
+        {
+            "file": "src/js/JasperClient.js",
+            "line": 50,
+            "description": "Constructor de la clase.",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "baseUrl",
+                    "description": "Url basea usar en los servicios",
+                    "type": "String"
+                },
+                {
+                    "name": "username",
+                    "description": "Nombre de usuario de Jasper",
+                    "type": "String"
+                },
+                {
+                    "name": "password",
+                    "description": "Clave de acceso de Jasper",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "JasperClient",
+            "module": "JasperClient"
+        },
+        {
+            "file": "src/js/JasperClient.js",
+            "line": 74,
+            "description": "Metodo que genera el reporte",
+            "itemtype": "method",
+            "name": "requestReport",
+            "params": [
+                {
+                    "name": "reportPath",
+                    "description": "La ruta hacia el reporte",
+                    "type": "String"
+                },
+                {
+                    "name": "reportName",
+                    "description": "El nombre del reporte deseado",
+                    "type": "String"
+                },
+                {
+                    "name": "fileFormat",
+                    "description": "El formato requerido (ej, HTML, PDF,...)",
+                    "type": "String"
+                },
+                {
+                    "name": "params",
+                    "description": "Los parametros requeridos por el reporte",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "Un callback que devuelve errores si existen, la data del reporte y los headers a enviar con el archivo",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Se provee de un callback al que se le pasa la data de salida",
+                "type": "Void"
+            },
+            "class": "JasperClient",
+            "module": "JasperClient"
+        },
+        {
+            "file": "src/js/JasperClient.js",
+            "line": 112,
+            "description": "Metodo que construye las cabezeras a ser enviadas con el archivo",
+            "itemtype": "method",
+            "name": "getResponseHeaders",
+            "params": [
+                {
+                    "name": "fileFormat",
+                    "description": "Formato del archivo: pdf, html, txt, etc",
+                    "type": "String"
+                },
+                {
+                    "name": "reportName",
+                    "description": "Nombre del reporte a imprimir",
+                    "type": "String"
+                },
+                {
+                    "name": "dataLength",
+                    "description": "Longitud del buffer",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "Retorna un objecto que contiene las cabeceras",
+                "type": "Object"
+            },
+            "class": "JasperClient",
+            "module": "JasperClient"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nEsta funcion hace las veces de adaptador para la funcion btoa",
+            "line": " src/js/Base64Encoder/Base64Encoder.js:3"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/js/JasperClient.js:46"
+        }
+    ]
+}

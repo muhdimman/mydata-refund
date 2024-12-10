@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-xl-12">
+        <div class="m-widget14">
+            <div class="m-widget25">
+                <span class="m-widget25__price m--font-brand">RM{{widget.all.total | number:'1.2-2'}}</span>
+                <span class="m-widget25__desc">Total Refund Request</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="m-separator m-separator--dashed m-separator--md"></div>
+<div class="row m-row--no-padding m-row--col-separator-xl">
+    <div class="col-md-12 col-lg-6 col-xl-3">
+        <div class="m-widget24">
+            <div class="m-widget24__item">
+                <h4 class="m-widget24__title">
+                    New
+                </h4><br>
+                <span class="m-widget24__stats m--font-primary">
+                    {{widget.new.percent}}%
+                </span>
+                <div class="m--space-10"></div>
+                <div class="progress m-progress--sm">
+                    <div class="progress-bar m--bg-primary" role="progressbar" 
+                        [style.width.%]="widget.new.percent" 
+                        [attr.aria-valuenow]="widget.new.percent"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="m-widget24__change">
+                    Total
+                </span>
+                <span class="m-widget24__number">
+                    RM{{widget.new.total | number:'1.2-2'}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-3">
+        <div class="m-widget24">
+            <div class="m-widget24__item">
+                <h4 class="m-widget24__title">
+                    Processing
+                </h4><br>
+                <span class="m-widget24__stats m--font-info">
+                    {{widget.processing.percent}}%
+                </span>
+                <div class="m--space-10"></div>
+                <div class="progress m-progress--sm">
+                    <div class="progress-bar m--bg-info" role="progressbar" 
+                        [style.width.%]="widget.processing.percent" 
+                        [attr.aria-valuenow]="widget.processing.percent"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="m-widget24__change">
+                    Total
+                </span>
+                <span class="m-widget24__number">
+                    RM{{widget.processing.total | number:'1.2-2'}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-3">
+        <div class="m-widget24">
+            <div class="m-widget24__item">
+                <h4 class="m-widget24__title">
+                    Requery
+                </h4><br>
+                <span class="m-widget24__stats m--font-warning">
+                    {{widget.requery.percent}}%
+                </span>
+                <div class="m--space-10"></div>
+                <div class="progress m-progress--sm">
+                    <div class="progress-bar m--bg-warning" role="progressbar" 
+                        [style.width.%]="widget.requery.percent" 
+                        [attr.aria-valuenow]="widget.requery.percent"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="m-widget24__change">
+                    Total
+                </span>
+                <span class="m-widget24__number">
+                    RM{{widget.requery.total | number:'1.2-2'}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-3">
+        <div class="m-widget24">
+            <div class="m-widget24__item">
+                <h4 class="m-widget24__title">
+                    Approved
+                </h4><br>
+                <span class="m-widget24__stats m--font-success">
+                    {{widget.approved.percent}}%
+                </span>
+                <div class="m--space-10"></div>
+                <div class="progress m-progress--sm">
+                    <div class="progress-bar m--bg-success" role="progressbar" 
+                        [style.width.%]="widget.approved.percent" 
+                        [attr.aria-valuenow]="widget.approved.percent" 
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="m-widget24__change">
+                    Total
+                </span>
+                <span class="m-widget24__number">
+                    RM{{widget.approved.total | number:'1.2-2'}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

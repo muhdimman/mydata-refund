@@ -1,0 +1,21 @@
+{
+    "dbHost": "127.0.0.1",
+    "dbName": "mydata-refund",
+    "dbUser": "apiuser",
+    "dbPassword": "xs@4pImysql",
+    "dbCharset": "utf8",
+    "loginUrl": "http://172.19.194.7:4220",
+    "backendUrl": "https://refund.mydata-ssm.com.my",
+    "reportUrl": "http://172.19.194.7:8080/jasperserver/rest_v2/reports",
+    "appUrl": "https://refund.mydata-ssm.com.my",
+    "emailSMTP": "smtp.office365.com",
+    "emailSMTPPort": 587,
+    "emailUser": "refund@mydata-ssm.com.my",
+    "emailPass": "Bdw@1234",
+    "dbV2Host": "172.19.194.76",
+    "dbV2Name": "mydata-v2",
+    "dbV2User": "apiuser",
+    "dbV2Password": "xs@4pImysql",
+    "dbV2Charset": "utf8",
+    "port": 4250
+}

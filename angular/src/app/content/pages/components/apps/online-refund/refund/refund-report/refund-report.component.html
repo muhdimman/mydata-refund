@@ -1,0 +1,34 @@
+<!-- <m-portlet [loading$]="dataSource.loading$"> -->
+<m-portlet>
+    <!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
+    <ng-container mPortletHeadTitle>
+        <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">
+                {{ getComponentTitle() }}
+            </h3>
+        </div>
+    </ng-container>
+    <ng-container mPortletHeadTools>
+    </ng-container>
+    <!-- end::Header -->
+    
+    <!-- start::Body (attribute: mPortletBody) -->
+    <ng-container mPortletBody>
+
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab label="All Records">
+                <ng-template matTabContent>
+                    <m-refund-report-table></m-refund-report-table>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Widgets">
+                <ng-template matTabContent>
+                    <m-refund-report-widget></m-refund-report-widget>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+
+    </ng-container>
+    <!-- end::Body -->
+</m-portlet>
+    

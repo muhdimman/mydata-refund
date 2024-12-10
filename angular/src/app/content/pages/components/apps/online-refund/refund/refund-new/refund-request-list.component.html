@@ -1,0 +1,170 @@
+<m-portlet [loading$]="dataSource.loading$">
+        <!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
+        <ng-container mPortletHeadTitle>
+            <div class="m-portlet__head-title">
+                <h3 class="m-portlet__head-text">
+                    {{ getComponentTitle() }}
+                </h3>
+            </div>
+        </ng-container>
+        <ng-container mPortletHeadTools>
+            <button type="button" [routerLink]="['/app/accountDetails/refund/new']" class="btn btn-brand m-btn m-btn--icon m-btn--wide m-btn--md" *ngIf="!dataSource.hasItems" matTooltip="Create request">
+                <span>Request Refund</span>
+            </button>
+        </ng-container>
+        <!-- end::Header -->
+        
+        <!-- start::Body (attribute: mPortletBody) -->
+        <ng-container mPortletBody>
+            
+            <div class="mat-table__wrapper">
+                <mat-table class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
+                    
+                    <ng-container matColumnDef="requestedDate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Requested Date</mat-header-cell>
+                        <mat-cell *matCellDef="let refund">{{refund.requestedDate | date:'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="fullName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</mat-header-cell>
+                        <mat-cell *matCellDef="let refund">{{refund.fullName}}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="icNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>IC No</mat-header-cell>
+                        <mat-cell *matCellDef="let refund">{{refund.icNo}}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="username">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                        <mat-cell *matCellDef="let refund">{{refund.username}}</mat-cell>
+                    </ng-container>
+    
+    
+                    <ng-container matColumnDef="prepaidBalance">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prepaid Balance (RM)</mat-header-cell>
+                        <mat-cell *matCellDef="let refund" style="padding-right:28px;">{{refund.prepaidBalance | number:'1.2-2'}}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                        <mat-cell *matCellDef="let refund">
+                            <span class="m-badge m-badge--{{ getItemCssClassByStatus(refund.status) }} m-badge--wide">{{ getItemStatusString(refund.status) }}</span>
+                        </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="remark">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Remark</mat-header-cell>
+                        <mat-cell *matCellDef="let refund">{{refund.remark}}</mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef style="padding-left:10px;">
+                            Actions
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let refund">
+                            <!-- <a [routerLink]="['/refund/view']" mat-icon-button color="primary" matTooltip="View">
+                                <i class="flaticon-edit"></i>
+                            </a>&nbsp;
+                            <button mat-icon-button color="primary" type="button" (click)="downloadRefund(refund.id)" matTooltip="Download">
+                                <i class="flaticon-download"></i>
+                            </button>&nbsp; -->
+                            <span style="overflow: visible; position: relative">
+                                <a [routerLink]="['/refund/view']" (click)="setLocalStorage(refund.id)" class="m-portlet__nav-link btn m-btn m-btn--hover-metal m-btn--icon m-btn--icon-only m-btn--pill" matTooltip="View">
+                                    <i class="la la-edit"></i>
+                                </a>
+                                <a (click)="downloadRefund(refund.id)" class="m-portlet__nav-link btn m-btn m-btn--hover-metal m-btn--icon m-btn--icon-only m-btn--pill" matTooltip="Download">
+                                    <i class="la la-download"></i>
+                                </a>
+                            </span>
+                        </mat-cell>
+                    </ng-container>
+    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                </mat-table>
+    
+                <div class="mat-table__message" *ngIf="!dataSource.hasItems">No records found</div>
+            </div>
+    
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+                <mat-spinner [diameter]="20" *ngIf="viewLoading"></mat-spinner>
+                <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+
+            <!-- <div class="m_datatable m-datatable m-datatable--default m-datatable--loaded">
+                <table class="m-datatable__table" style="display: block; min-height: 300px; overflow-x: auto;font-family:Poppins;">
+                    <thead class="m-datatable__head">
+                        <tr class="m-datatable__row">
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;width:14%;padding-left:20px">
+                                <span>Requested Date</span>
+                            </th>
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;width:25%">
+                                <span>Full Name</span>
+                            </th>
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;width:11%">
+                                <span>Username</span>
+                            </th>
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;width:15%;text-align:right;padding-right:20px">
+                                <span>Prepaid Balance (RM)</span>
+                            </th>
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;width:11%">
+                                <span>Status</span>
+                            </th>
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;width:15%">
+                                <span>Remark</span>
+                            </th>
+                            <th class="m-datatable__cell m-datatable__cell--sort" style="font-size:11.5px;font-weight:500;text-align:center">
+                                <span>Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="m-datatable__body">
+                        <tr *ngFor="let item of refundResult" class="m-datatable__row">
+                            <td class="m-datatable__cell" style="width:14%;padding-left:20px">
+                                <span>{{item.requestedDate | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+                            </td>
+                            <td class="m-datatable__cell" style="width:25%">
+                                <span>{{item.fullName}}</span>
+                            </td>
+                            <td class="m-datatable__cell" style="width:11%">
+                                <span>{{item.username}}</span>
+                            </td>
+                            <td class="m-datatable__cell" style="width:15%;text-align:right;padding-right:20px">
+                                <span>{{item.prepaidBalance| number:'1.2-2'}}</span>
+                            </td>
+                            <td class="m-datatable__cell" style="width:11%">
+                                <span>
+                                    <span class="m-badge m-badge--{{ getItemCssClassByStatus(item.status) }} m-badge--wide" style="font-size:9px;font-weight:500">
+                                        {{ getItemStatusString(item.status) }}
+                                    </span>
+                                </span>
+                            </td>
+                            <td class="m-datatable__cell" style="width:15%">
+                                <span>{{item.remark}}</span>
+                            </td>
+                            <td class="m-datatable__cell" style="text-align:center">
+                                <span style="overflow: visible; position: relative">
+                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-metal m-btn--icon m-btn--icon-only m-btn--pill" title="View ">
+                                        <i class="la la-edit"></i>
+                                    </a>
+                                    <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-metal m-btn--icon m-btn--icon-only m-btn--pill" title="View ">
+                                        <i class="la la-download"></i>
+                                    </a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!dataSource.hasItems" class="m-datatable__body" style="padding: 30px;text-align: center;">
+                        <span class="m-datatable--error" style="font-size:13px;font-weight:300;font-family:Poppins;">No records found</span>
+                    </tbody>
+                </table>
+            </div> -->
+
+        </ng-container>
+        <!-- end::Body -->
+
+    </m-portlet>
+    

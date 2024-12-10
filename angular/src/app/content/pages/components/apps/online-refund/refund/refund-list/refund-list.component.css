@@ -1,0 +1,81 @@
+.mat-column-requestedDate {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+}
+.mat-column-refundNumber {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+}
+.mat-column-processedDate {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+}
+.mat-column-requeryDate {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+}
+.mat-column-amendedDate {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+}
+.mat-column-approvedDate {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 140px;
+}
+.mat-column-fullName {
+    flex: 0 0 auto;
+    width: 210px;
+    max-width: 210px;
+}
+.mat-column-icNo {
+    flex: 0 0 auto;
+    width: auto !important;
+}
+.mat-column-username {
+    flex: 0 0 auto;
+    width: 120px;
+    max-width: 120px;
+}
+.mat-column-refundAmount {
+    flex: 0 0 auto;
+    width: 150px;
+    max-width: 150px;
+    display: flex;
+    justify-content: flex-end;
+}
+.mat-column-status {
+    flex: 0 0 auto;
+    width: 90px;
+    max-width: 90px;
+}
+.mat-column-aging {
+    flex: 0 0 auto;
+    width: 100px;
+    max-width: 100px;
+    display: flex;
+    justify-content: center;
+}
+.mat-column-remark {
+    flex: 0 0 auto;
+    width: 145px;
+    max-width: 145px;
+}
+.mat-column-actions {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: auto;
+}
+.mat-header-row {
+    background: #f4f3f8;
+    min-height: 45px;
+    /* border-bottom-width: 0px; */
+}
+.mat-header-cell {
+    font-weight: 600;
+}
